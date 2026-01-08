@@ -23,7 +23,6 @@ def calculate_panels(panel_width: int, panel_height: int,
     return max(horizontal_count, rotated_count)
 
 
-
 def run_tests() -> None:
     with open('test_cases.json') as f:
         data = json.load(f)
