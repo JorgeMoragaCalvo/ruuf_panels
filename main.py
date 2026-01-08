@@ -1,0 +1,66 @@
+from typing import List, Dict
+import json
+
+
+def calculate_panels(panel_width: int, panel_height: int,
+                     roof_width: int, roof_height: int) -> int:
+    """
+        Calculates maximum panels that fit on a roof, trying both orientations.
+
+        Returns:
+            >= 0 : maximum number of panels
+            -1   : invalid panel dimensions
+            -2   : invalid roof dimensions
+        """
+    if panel_width <= 0 or panel_height <= 0:
+        return -1
+    if roof_width <= 0 or roof_height <= 0:
+        return -2
+
+    horizontal_count = (roof_width // panel_width) * (roof_height // panel_height)
+    rotated_count = (roof_width // panel_height) * (roof_height // panel_width)
+
+    return max(horizontal_count, rotated_count)
+
+
+
+def run_tests() -> None:
+    with open('test_cases.json') as f:
+        data = json.load(f)
+        test_cases: List[Dict[str, int]] = [
+            {
+                "panel_w": test["panelW"],
+                "panel_h": test["panelH"],
+                "roof_w": test["roofW"],
+                "roof_h": test["roofH"],
+                "expected": test["expected"]
+            }
+            for test in data["testCases"]
+        ]
+
+    print("Corriendo tests:")
+    print("-------------------")
+
+    for i, test in enumerate(test_cases, 1):
+        result = calculate_panels(
+            test["panel_w"], test["panel_h"],
+            test["roof_w"], test["roof_h"]
+        )
+        passed = result == test["expected"]
+
+        print(f"Test {i}:")
+        print(f"  Panels: {test['panel_w']}x{test['panel_h']}, "
+              f"Roof: {test['roof_w']}x{test['roof_h']}")
+        print(f"  Expected: {test['expected']}, Got: {result}")
+        print(f"  Status: {'✅ PASSED' if passed else '❌ FAILED'}\n")
+
+
+def main() -> None:
+    print("🐕 Wuuf wuuf wuuf 🐕")
+    print("================================\n")
+
+    run_tests()
+
+
+if __name__ == "__main__":
+    main()
